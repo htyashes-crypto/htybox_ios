@@ -3,6 +3,7 @@
 
 import {
   connectLan,
+  makeBackoff,
   RpcTypes,
   type ConnectionOffer,
   type CreateTerminalResult,
@@ -19,26 +20,93 @@ import {
 } from "@htybox/link";
 import { createRevisionGate } from "./revisionGate";
 
-export type ConnState = "idle" | "connecting" | "connected" | "closed" | "error";
+export type ConnState = "idle" | "connecting" | "connected" | "reconnecting" | "closed" | "error";
+
+function delay(ms: number): Promise<void> {
+  return new Promise((r) => setTimeout(r, ms));
+}
 
 export class HostConnection {
   private conn: LanConnection | null = null;
   state: ConnState = "idle";
+  /** 每次成功(重)连 +1；UI 据此重挂终端、重订阅、刷新列表。 */
+  generation = 0;
+  private offer: ConnectionOffer | null = null;
+  private clientId = "";
+  private appVersion = "";
+  private listeners = new Set<() => void>();
+  private reconnecting = false;
 
   get serverInfo(): ServerInfo | null {
     return this.conn?.serverInfo ?? null;
   }
 
+  /** 订阅连接状态/代际变化；返回取消。 */
+  onChange(cb: () => void): () => void {
+    this.listeners.add(cb);
+    return () => void this.listeners.delete(cb);
+  }
+  private emit(): void {
+    this.listeners.forEach((l) => l());
+  }
+
   async connect(offer: ConnectionOffer, clientId: string, appVersion: string): Promise<ServerInfo> {
-    this.state = "connecting";
+    this.offer = offer;
+    this.clientId = clientId;
+    this.appVersion = appVersion;
+    return this.open();
+  }
+
+  private async open(): Promise<ServerInfo> {
+    if (!this.offer) throw new Error("未配置 offer");
+    this.state = this.generation === 0 ? "connecting" : "reconnecting";
+    this.emit();
     try {
-      this.conn = await connectLan(offer, { clientId, clientType: "ios", appVersion });
-      this.state = "connected";
-      return this.conn.serverInfo;
+      this.conn = await connectLan(this.offer, {
+        clientId: this.clientId,
+        clientType: "ios",
+        appVersion: this.appVersion,
+        onClose: () => this.onClosed(),
+      });
     } catch (e) {
-      this.state = "error";
+      if (this.generation === 0) {
+        this.state = "error";
+        this.emit();
+      }
       throw e;
     }
+    this.state = "connected";
+    this.generation += 1;
+    this.emit();
+    return this.conn.serverInfo;
+  }
+
+  private onClosed(): void {
+    if (this.state === "closed") return;
+    this.conn = null;
+    if (!this.reconnecting) void this.reconnect();
+  }
+
+  private async reconnect(): Promise<void> {
+    this.reconnecting = true;
+    this.state = "reconnecting";
+    this.emit();
+    const backoff = makeBackoff();
+    while ((this.state as ConnState) !== "closed" && !this.conn) {
+      await delay(backoff.next());
+      if ((this.state as ConnState) === "closed") break;
+      try {
+        await this.open();
+      } catch {
+        /* 继续退避重试，open 内已 emit */
+      }
+    }
+    this.reconnecting = false;
+  }
+
+  /** 前台恢复：若已断且未在重连，触发重连。 */
+  ensureConnected(): void {
+    if (this.state !== "connected" && !this.reconnecting && this.offer) void this.reconnect();
   }
 
   private client() {
@@ -106,8 +174,9 @@ export class HostConnection {
     return this.client().request(RpcTypes.terminalKill, { terminalId });
   }
   close(): void {
+    this.state = "closed";
     this.conn?.close();
     this.conn = null;
-    this.state = "closed";
+    this.emit();
   }
 }

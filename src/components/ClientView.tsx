@@ -1,6 +1,6 @@
 // 连上 Host 后的镜像主屏（外壳）：工具栏(侧栏开关滑动 + 工作区▾ + ＋终端▾) +
 // 终端 Tab 条 + 活动终端 + 左滑 Content + 控制键条 + 富输入框 + 底部状态/断开。
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import type { WorkspaceInfo } from "@htybox/link";
 import type { HostConnection } from "../conn/connection";
 import { MobileTerminal, type MobileTerminalHandle } from "../terminal/MobileTerminal";
@@ -38,6 +38,19 @@ export function ClientView({ conn, onDisconnect }: Props) {
   const [note, setNote] = useState("");
   const termRef = useRef<MobileTerminalHandle>(null);
   const noteTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [, forceTick] = useReducer((x: number) => x + 1, 0);
+  const gen = conn.generation;
+
+  // 订阅连接状态/代际变化 → 重渲染
+  useEffect(() => conn.onChange(forceTick), [conn]);
+  // 前后台恢复：回前台若已断则重连
+  useEffect(() => {
+    const onVis = () => {
+      if (document.visibilityState === "visible") conn.ensureConnected();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, [conn]);
 
   const flash = useCallback((m: string) => {
     setNote(m);
@@ -61,7 +74,7 @@ export function ClientView({ conn, onDisconnect }: Props) {
     return () => {
       if (noteTimer.current) clearTimeout(noteTimer.current);
     };
-  }, [reload]);
+  }, [reload, gen]);
 
   // L5-4P：拉取桌面发布的工作区，默认定位到当前激活
   useEffect(() => {
@@ -72,7 +85,7 @@ export function ClientView({ conn, onDisconnect }: Props) {
         setActiveWsId((cur) => cur ?? r.activeId ?? r.workspaces[0]?.id ?? null);
       })
       .catch(() => {});
-  }, [conn]);
+  }, [conn, gen]);
 
   async function newTerminal(kind: NewTermKind) {
     try {
@@ -120,6 +133,12 @@ export function ClientView({ conn, onDisconnect }: Props) {
         />
       </div>
 
+      {conn.state === "reconnecting" && (
+        <div className="px-4 py-1 text-center text-xs" style={{ background: "rgba(217,119,87,0.18)", color: "var(--accent)" }}>
+          连接断开，重连中…
+        </div>
+      )}
+
       <TerminalTabs
         terminals={terminals}
         activeId={activeId}
@@ -133,7 +152,7 @@ export function ClientView({ conn, onDisconnect }: Props) {
       {/* 终端 + 左滑 Content（叠加）*/}
       <div className="relative min-h-0 flex-1">
         {activeId ? (
-          <MobileTerminal key={activeId} ref={termRef} conn={conn} terminalId={activeId} />
+          <MobileTerminal key={`${activeId}:${conn.generation}`} ref={termRef} conn={conn} terminalId={activeId} />
         ) : (
           <div className="grid h-full place-items-center px-6 text-center text-sm leading-relaxed" style={{ color: "var(--text-dim)" }}>
             还没有终端。
