@@ -62,6 +62,16 @@ export class HostConnection {
     });
   }
 
+  /** 释放对某终端的订阅（不杀终端）。清理路径用，连接已断则忽略。 */
+  async unsubscribe(terminalId: string): Promise<void> {
+    if (this.state !== "connected") return;
+    try {
+      await this.client().request(RpcTypes.terminalUnsubscribe, { terminalId });
+    } catch {
+      // 连接可能已断，卸载清理路径忽略
+    }
+  }
+
   sendInput(slot: number, bytes: Uint8Array): void {
     this.client().sendInput(slot, bytes);
   }

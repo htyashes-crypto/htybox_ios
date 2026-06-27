@@ -1,25 +1,19 @@
-// L5 移动端外壳：Host 列表 → 配对 / 连接 → 终端列表 → 终端视图（无 dockview/allotment）。
+// L5 移动端外壳：Host 列表 → 配对 / 连接 → ClientView（镜像整个客户端）。
 import { useCallback, useEffect, useState } from "react";
 import { getClientId } from "./conn/clientId";
 import { HostConnection } from "./conn/connection";
 import { LocalStorageProfileStore, offerFromProfile, profileFromOffer, type HostProfile } from "./conn/profileStore";
+import { ClientView } from "./components/ClientView";
 import { HostList } from "./components/HostList";
 import { PairingScreen } from "./components/PairingScreen";
-import { TerminalList } from "./components/TerminalList";
-import { TerminalScreen } from "./components/TerminalScreen";
 
 const APP_VERSION = "0.1.0";
-
-type Screen =
-  | { name: "hosts" }
-  | { name: "pairing" }
-  | { name: "terminals" }
-  | { name: "terminal"; terminalId: string };
+type Screen = "hosts" | "pairing" | "client";
 
 export default function App() {
   const [store] = useState(() => new LocalStorageProfileStore());
   const [profiles, setProfiles] = useState<HostProfile[]>([]);
-  const [screen, setScreen] = useState<Screen>({ name: "hosts" });
+  const [screen, setScreen] = useState<Screen>("hosts");
   const [conn, setConn] = useState<HostConnection | null>(null);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
@@ -36,7 +30,7 @@ export default function App() {
       const c = new HostConnection();
       await c.connect(offerFromProfile(p), getClientId(), APP_VERSION);
       setConn(c);
-      setScreen({ name: "terminals" });
+      setScreen("client");
     } catch (e) {
       setError(`连接失败：${String(e)}`);
     } finally {
@@ -47,33 +41,30 @@ export default function App() {
   function disconnect() {
     conn?.close();
     setConn(null);
-    setScreen({ name: "hosts" });
+    setScreen("hosts");
   }
 
-  if (screen.name === "pairing") {
+  if (screen === "pairing") {
     return (
       <PairingScreen
-        onCancel={() => setScreen({ name: "hosts" })}
+        onCancel={() => setScreen("hosts")}
         onPaired={async (offer) => {
           await store.upsert(profileFromOffer(offer));
           await reload();
-          setScreen({ name: "hosts" });
+          setScreen("hosts");
         }}
       />
     );
   }
-  if (screen.name === "terminals" && conn) {
-    return <TerminalList conn={conn} onBack={disconnect} onOpen={(terminalId) => setScreen({ name: "terminal", terminalId })} />;
-  }
-  if (screen.name === "terminal" && conn) {
-    return <TerminalScreen conn={conn} terminalId={screen.terminalId} onBack={() => setScreen({ name: "terminals" })} />;
+  if (screen === "client" && conn) {
+    return <ClientView conn={conn} onDisconnect={disconnect} />;
   }
   return (
     <HostList
       profiles={profiles}
       busy={busy}
       error={error}
-      onPair={() => setScreen({ name: "pairing" })}
+      onPair={() => setScreen("pairing")}
       onConnect={connectTo}
       onDelete={async (sid) => {
         await store.remove(sid);

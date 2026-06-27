@@ -91,6 +91,7 @@ export const MobileTerminal = forwardRef<MobileTerminalHandle, Props>(function M
       disposed = true;
       ro.disconnect();
       dataSub.dispose();
+      void conn.unsubscribe(terminalId);
       term.dispose();
       termRef.current = null;
       slotRef.current = -1;
