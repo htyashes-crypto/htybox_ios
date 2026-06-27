@@ -1,12 +1,13 @@
 // 连上 Host 后的镜像主屏（外壳）：工具栏(侧栏开关滑动 + 工作区▾ + ＋终端▾) +
 // 终端 Tab 条 + 活动终端 + 左滑 Content + 控制键条 + 富输入框 + 底部状态/断开。
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { WorkspaceInfo } from "@htybox/link";
 import type { HostConnection } from "../conn/connection";
 import { MobileTerminal, type MobileTerminalHandle } from "../terminal/MobileTerminal";
 import { Composer } from "./Composer";
 import { SidebarPanel } from "./SidebarPanel";
 import { TerminalTabs, type TermTab } from "./TerminalTabs";
-import { Toolbar, type NewTermKind, type WorkspaceOpt } from "./Toolbar";
+import { Toolbar, type NewTermKind } from "./Toolbar";
 import { ConfirmModal } from "./ui/ConfirmModal";
 
 // 控制键条：补软键盘缺失的终端控制键（发到活动终端）。
@@ -30,7 +31,7 @@ interface Props {
 export function ClientView({ conn, onDisconnect }: Props) {
   const [terminals, setTerminals] = useState<TermTab[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [workspaces, setWorkspaces] = useState<WorkspaceOpt[]>([]);
+  const [workspaces, setWorkspaces] = useState<WorkspaceInfo[]>([]);
   const [activeWsId, setActiveWsId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [confirmKill, setConfirmKill] = useState<TermTab | null>(null);
@@ -67,7 +68,7 @@ export function ClientView({ conn, onDisconnect }: Props) {
     conn
       .listWorkspaces()
       .then((r) => {
-        setWorkspaces(r.workspaces.map((w) => ({ id: w.id, name: w.name })));
+        setWorkspaces(r.workspaces);
         setActiveWsId((cur) => cur ?? r.activeId ?? r.workspaces[0]?.id ?? null);
       })
       .catch(() => {});
@@ -140,7 +141,7 @@ export function ClientView({ conn, onDisconnect }: Props) {
             点右上「＋ 终端」新建；桌面打开的终端也会出现在这里。
           </div>
         )}
-        <SidebarPanel open={sidebarOpen} />
+        <SidebarPanel open={sidebarOpen} conn={conn} activeWs={workspaces.find((w) => w.id === activeWsId) ?? null} />
       </div>
 
       {note && (

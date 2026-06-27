@@ -12,6 +12,10 @@ import {
   type SubscribeTerminalResult,
   type TerminalListResult,
   type WorkspacesResult,
+  type SkillsResult,
+  type MemoriesResult,
+  type FilesResult,
+  type SessionsResult,
 } from "@htybox/link";
 import { createRevisionGate } from "./revisionGate";
 
@@ -49,6 +53,20 @@ export class HostConnection {
   /** 列 Host 已发布的工作区（桌面前端经 set_workspaces 发布）。 */
   listWorkspaces(): Promise<WorkspacesResult> {
     return this.client().request<WorkspacesResult>(RpcTypes.hostWorkspacesList, {});
+  }
+
+  // ── 只读 catalog（镜像桌面左侧 Content）──
+  listSkills(projectDir: string): Promise<SkillsResult> {
+    return this.client().request<SkillsResult>(RpcTypes.catalogSkillsList, { projectDir });
+  }
+  listMemories(slug: string): Promise<MemoriesResult> {
+    return this.client().request<MemoriesResult>(RpcTypes.catalogMemoriesList, { slug });
+  }
+  listFiles(dir: string): Promise<FilesResult> {
+    return this.client().request<FilesResult>(RpcTypes.catalogFilesList, { dir });
+  }
+  listSessions(cwd: string): Promise<SessionsResult> {
+    return this.client().request<SessionsResult>(RpcTypes.catalogSessionsList, { cwd });
   }
 
   async createTerminal(cols: number, rows: number): Promise<string> {
