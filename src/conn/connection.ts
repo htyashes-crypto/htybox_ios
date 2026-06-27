@@ -11,6 +11,7 @@ import {
   type ServerInfo,
   type SubscribeTerminalResult,
   type TerminalListResult,
+  type WorkspacesResult,
 } from "@htybox/link";
 import { createRevisionGate } from "./revisionGate";
 
@@ -43,6 +44,11 @@ export class HostConnection {
 
   listTerminals(): Promise<TerminalListResult> {
     return this.client().request<TerminalListResult>(RpcTypes.terminalList, {});
+  }
+
+  /** 列 Host 已发布的工作区（桌面前端经 set_workspaces 发布）。 */
+  listWorkspaces(): Promise<WorkspacesResult> {
+    return this.client().request<WorkspacesResult>(RpcTypes.hostWorkspacesList, {});
   }
 
   async createTerminal(cols: number, rows: number): Promise<string> {

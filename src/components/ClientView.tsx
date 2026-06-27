@@ -6,7 +6,7 @@ import { MobileTerminal, type MobileTerminalHandle } from "../terminal/MobileTer
 import { Composer } from "./Composer";
 import { SidebarPanel } from "./SidebarPanel";
 import { TerminalTabs, type TermTab } from "./TerminalTabs";
-import { Toolbar, type NewTermKind } from "./Toolbar";
+import { Toolbar, type NewTermKind, type WorkspaceOpt } from "./Toolbar";
 import { ConfirmModal } from "./ui/ConfirmModal";
 
 // 控制键条：补软键盘缺失的终端控制键（发到活动终端）。
@@ -30,6 +30,8 @@ interface Props {
 export function ClientView({ conn, onDisconnect }: Props) {
   const [terminals, setTerminals] = useState<TermTab[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [workspaces, setWorkspaces] = useState<WorkspaceOpt[]>([]);
+  const [activeWsId, setActiveWsId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [confirmKill, setConfirmKill] = useState<TermTab | null>(null);
   const [note, setNote] = useState("");
@@ -59,6 +61,17 @@ export function ClientView({ conn, onDisconnect }: Props) {
       if (noteTimer.current) clearTimeout(noteTimer.current);
     };
   }, [reload]);
+
+  // L5-4P：拉取桌面发布的工作区，默认定位到当前激活
+  useEffect(() => {
+    conn
+      .listWorkspaces()
+      .then((r) => {
+        setWorkspaces(r.workspaces.map((w) => ({ id: w.id, name: w.name })));
+        setActiveWsId((cur) => cur ?? r.activeId ?? r.workspaces[0]?.id ?? null);
+      })
+      .catch(() => {});
+  }, [conn]);
 
   async function newTerminal(kind: NewTermKind) {
     try {
@@ -96,12 +109,12 @@ export function ClientView({ conn, onDisconnect }: Props) {
     <div className="flex h-full flex-col">
       <div style={{ paddingTop: "env(safe-area-inset-top)", background: "#211e1a" }}>
         <Toolbar
-          workspaceLabel={hostName}
-          workspaces={[{ id: "_host", name: hostName }]}
+          workspaceLabel={workspaces.find((w) => w.id === activeWsId)?.name ?? hostName}
+          workspaces={workspaces.length ? workspaces : [{ id: "_host", name: hostName }]}
           sidebarOpen={sidebarOpen}
           onToggleSidebar={() => setSidebarOpen((v) => !v)}
-          onPickWorkspace={() => { /* 4P: 真实工作区切换 */ }}
-          onNewWorkspace={() => flash("新建工作区：待协议接入（Step 4P）")}
+          onPickWorkspace={(id) => setActiveWsId(id)}
+          onNewWorkspace={() => flash("新建工作区请在桌面操作")}
           onNewTerminal={newTerminal}
         />
       </div>
