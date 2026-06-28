@@ -3,11 +3,13 @@
 
 import {
   connectLan,
+  connectRelay,
   makeBackoff,
   RpcTypes,
+  type Connection,
   type ConnectionOffer,
+  type ConnectOptions,
   type CreateTerminalResult,
-  type LanConnection,
   type RestoreMode,
   type ServerInfo,
   type SubscribeTerminalResult,
@@ -27,8 +29,10 @@ function delay(ms: number): Promise<void> {
 }
 
 export class HostConnection {
-  private conn: LanConnection | null = null;
+  private conn: Connection | null = null;
   state: ConnState = "idle";
+  /** 当前连接路径（UI 显示 LAN/relay）。 */
+  path: "lan" | "relay" | null = null;
   /** 每次成功(重)连 +1；UI 据此重挂终端、重订阅、刷新列表。 */
   generation = 0;
   private offer: ConnectionOffer | null = null;
@@ -61,13 +65,14 @@ export class HostConnection {
     if (!this.offer) throw new Error("未配置 offer");
     this.state = this.generation === 0 ? "connecting" : "reconnecting";
     this.emit();
+    const opts: ConnectOptions = {
+      clientId: this.clientId,
+      clientType: "ios",
+      appVersion: this.appVersion,
+      onClose: () => this.onClosed(),
+    };
     try {
-      this.conn = await connectLan(this.offer, {
-        clientId: this.clientId,
-        clientType: "ios",
-        appVersion: this.appVersion,
-        onClose: () => this.onClosed(),
-      });
+      this.conn = await this.dial(opts);
     } catch (e) {
       if (this.generation === 0) {
         this.state = "error";
@@ -79,6 +84,26 @@ export class HostConnection {
     this.generation += 1;
     this.emit();
     return this.conn.serverInfo;
+  }
+
+  /** 选路（决策5=A）：LAN 优先（offer 有 lan 先试），失败或无 lan 再走 relay 中继。 */
+  private async dial(opts: ConnectOptions): Promise<Connection> {
+    const offer = this.offer!;
+    if (offer.lan) {
+      try {
+        const c = await connectLan(offer, opts);
+        this.path = "lan";
+        return c;
+      } catch (e) {
+        if (!offer.relay) throw e; // 无 relay 兜底 → 抛原错误
+      }
+    }
+    if (offer.relay) {
+      const c = await connectRelay(offer, opts);
+      this.path = "relay";
+      return c;
+    }
+    throw new Error("offer 既无 lan 也无 relay 端点");
   }
 
   private onClosed(): void {
@@ -177,6 +202,7 @@ export class HostConnection {
     this.state = "closed";
     this.conn?.close();
     this.conn = null;
+    this.path = null;
     this.emit();
   }
 }

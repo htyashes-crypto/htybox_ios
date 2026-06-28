@@ -8,7 +8,7 @@ export interface HostProfile {
   hostName: string;
   hostPublicKeyB64: string;
   lan?: { host: string; port: number };
-  relay?: { endpoint: string; useTls: boolean }; // 预留，L5 不连
+  relay?: { endpoint: string; useTls: boolean }; // L4 起：HostConnection 选路用（LAN 优先回退 relay）
   createdAt: number;
   updatedAt: number;
 }
