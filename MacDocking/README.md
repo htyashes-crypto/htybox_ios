@@ -189,3 +189,36 @@ pnpm tauri ios dev --host   # 或 build 出 ipa 装机
 
 完成 Step 6 后，HtyBox 双端 L5（LAN 直连 iOS 客户端）即全线打通。relay 远程（L4，异地非同网）是后续独立里程碑，不在本次范围。
 
+---
+
+## 10. Step 6 完成记录（Mac 真机执行结果）
+
+**完成时间**：2026-06-28
+
+**完成内容**：
+- 已在 `HtyBox_ios` 初始化 Tauri 2 Mobile 工程与 iOS Xcode 工程：`src-tauri/`、`src-tauri/gen/apple/htybox-ios.xcodeproj`。
+- 已接入扫码：`@tauri-apps/plugin-barcode-scanner` + iOS `NSCameraUsageDescription`，`PairingScreen` 可直接扫描桌面 Host 的配对二维码。
+- 已配置 iOS 权限：相机、本地网络 `NSLocalNetworkUsageDescription`、ATS `NSAllowsLocalNetworking`。
+- 已接入并保留 Stronghold 原生存储实现；为保证 L5 真机联调稳定，当前默认 HostProfile 持久化使用 `localStorage`，后续可再切回 `StrongholdProfileStore`。
+- 已安装并验证 Mac 构建工具链：Xcode 26.6、iOS 26.5 Simulator runtime、Rust stable、`aarch64-apple-ios` / `aarch64-apple-ios-sim`、CocoaPods、XcodeGen、libimobiledevice。
+- 已在 iPhone 15 Pro Max 真机安装运行，并完成扫码配对、Host 列表保存、LAN 连接验证。
+
+**验证结果**：
+- `tsc --noEmit` 通过。
+- `vite build` 通过。
+- `tauri ios init` 通过。
+- `tauri ios build --target aarch64-sim --debug` 通过。
+- iPhone 真机安装、信任开发者证书、启动通过。
+- Windows Host 侧关闭全局 VPN / TUN 后，重新生成 LAN offer，iOS 扫码配对与连接通过。
+
+**关键修正与坑**：
+- Xcode 26 真机脚本环境会把 `CURRENT_ARCH/arch` 暴露成 `undefined_arch`，导致 Tauri CLI 的 `ios xcode-script` 报 `Arch specified by Xcode was invalid`。当前 `project.yml` 中的 `Build Rust Code` 改为直接 `cargo build --target ...` 并复制 `libapp_lib.a` 到 Xcode 期望的 `Externals/arm64/<configuration>/libapp.a`。
+- 直接 `cargo build` 时必须带 `--features tauri/custom-protocol`，否则 Tauri 会按 dev 模式编译并继续加载 `devUrl`（如 `localhost:1430` 或 Mac LAN IP），真机上会出现 `Failed to request ... did you grant local network permissions?`。
+- 因绕过 Tauri helper，Xcode build phase 需要显式把 `../dist` 复制到 `src-tauri/gen/apple/assets`，否则真机包内没有前端静态资源。
+- Windows Host 如果开启全局 VPN/TUN，配对 offer 可能带 `198.18.x.x` 虚拟网段地址，iPhone 无法连接。正确 LAN offer 应为 `192.168.x.x` / `10.x.x.x` / `172.16.x.x` 等同网段地址。
+- Windows 防火墙仍需放行 `6767` 入站。
+
+**当前遗留**：
+- `StrongholdProfileStore` 已实现但默认未启用；后续若要恢复原生安全存储，需要先补充真机错误提示与迁移策略。
+- App 图标仍为 Tauri/Xcode 默认占位资源，后续可替换正式图标。
+

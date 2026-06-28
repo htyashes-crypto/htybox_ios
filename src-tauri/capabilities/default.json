@@ -1,0 +1,22 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "enables the default permissions",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "barcode-scanner:allow-check-permissions",
+    "barcode-scanner:allow-open-app-settings",
+    "barcode-scanner:allow-request-permissions",
+    "barcode-scanner:allow-scan",
+    "stronghold:allow-create-client",
+    "stronghold:allow-get-store-record",
+    "stronghold:allow-initialize",
+    "stronghold:allow-load-client",
+    "stronghold:allow-remove-store-record",
+    "stronghold:allow-save",
+    "stronghold:allow-save-store-record"
+  ]
+}

@@ -1,0 +1,454 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0F85DF2186982B720B1D32C2 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4E499732FBFE007AE976A8F /* MetalKit.framework */; };
+		1268012885EE55F114290774 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9445747A36A44605568C847 /* Security.framework */; };
+		18CFDC8C291AC166FF5C5A22 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4D6F5716EC75AEA91D1B137 /* LaunchScreen.storyboard */; };
+		26ED0B10699BCAE312548A0E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A3E5122587BDCFA9FB08EC0 /* CoreGraphics.framework */; };
+		319F8F1E3D8FBBAB7C2FC344 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58284975E62C56F92530FFB7 /* UIKit.framework */; };
+		4A528B30818D4E934538957C /* libapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA678759C1C494D81EF5129 /* libapp.a */; };
+		55CC1434FF8AF3B3D724CC7A /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = DFB8ADB37C33DE376D8E1558 /* main.mm */; };
+		6FE9AF5AA0E1F1E556568AF1 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C1E65392D3412413E421C58 /* WebKit.framework */; };
+		9A7B752AC9946B839CADF62E /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 51C91D0854BB2D692142B24C /* assets */; };
+		B421C02AB6EEBE5162884F37 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF8C28C86AD8D05817DB2757 /* Metal.framework */; };
+		EAAB63976DF11DA2E6D906F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBC1F2BACCF334143B914ABF /* Assets.xcassets */; };
+		ED299FC5CE8D2E96E1D50EA0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5382E41B3C2400E0899814F4 /* QuartzCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2A3E5122587BDCFA9FB08EC0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2CDFEFF6E416082AFDD79DA6 /* bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bindings.h; sourceTree = "<group>"; };
+		32CA052C302BA0458C9FDD36 /* main.rs */ = {isa = PBXFileReference; path = main.rs; sourceTree = "<group>"; };
+		36341CEC234FAD894798C20D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3C7F7923BAFB454506976F70 /* htybox-ios_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "htybox-ios_iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		51C91D0854BB2D692142B24C /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
+		5382E41B3C2400E0899814F4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		58284975E62C56F92530FFB7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8C1E65392D3412413E421C58 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		9AA678759C1C494D81EF5129 /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
+		BBC1F2BACCF334143B914ABF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D1DB658DCD342E16D6B6069E /* lib.rs */ = {isa = PBXFileReference; path = lib.rs; sourceTree = "<group>"; };
+		D4E499732FBFE007AE976A8F /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		DF8C28C86AD8D05817DB2757 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		DFB8ADB37C33DE376D8E1558 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		E4D6F5716EC75AEA91D1B137 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E9445747A36A44605568C847 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F5D780146C6842733CA9D943 /* htybox-ios_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "htybox-ios_iOS.entitlements"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DCC29A8E9C2BA2F8FEABD10F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A528B30818D4E934538957C /* libapp.a in Frameworks */,
+				26ED0B10699BCAE312548A0E /* CoreGraphics.framework in Frameworks */,
+				B421C02AB6EEBE5162884F37 /* Metal.framework in Frameworks */,
+				0F85DF2186982B720B1D32C2 /* MetalKit.framework in Frameworks */,
+				ED299FC5CE8D2E96E1D50EA0 /* QuartzCore.framework in Frameworks */,
+				1268012885EE55F114290774 /* Security.framework in Frameworks */,
+				319F8F1E3D8FBBAB7C2FC344 /* UIKit.framework in Frameworks */,
+				6FE9AF5AA0E1F1E556568AF1 /* WebKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		058500FD4618C86F00994CA6 /* htybox-ios_iOS */ = {
+			isa = PBXGroup;
+			children = (
+				F5D780146C6842733CA9D943 /* htybox-ios_iOS.entitlements */,
+				36341CEC234FAD894798C20D /* Info.plist */,
+			);
+			path = "htybox-ios_iOS";
+			sourceTree = "<group>";
+		};
+		1435D2C6F5F27E29174D9A3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3C7F7923BAFB454506976F70 /* htybox-ios_iOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29129AE9E8443C9331DB1ABB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A3E5122587BDCFA9FB08EC0 /* CoreGraphics.framework */,
+				9AA678759C1C494D81EF5129 /* libapp.a */,
+				DF8C28C86AD8D05817DB2757 /* Metal.framework */,
+				D4E499732FBFE007AE976A8F /* MetalKit.framework */,
+				5382E41B3C2400E0899814F4 /* QuartzCore.framework */,
+				E9445747A36A44605568C847 /* Security.framework */,
+				58284975E62C56F92530FFB7 /* UIKit.framework */,
+				8C1E65392D3412413E421C58 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		36EAEE27A62AA2F0ACBFEC48 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				6C5F38A1D5B4E273EF573106 /* htybox-ios */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		46B59B284B41218DF3BD91CD /* bindings */ = {
+			isa = PBXGroup;
+			children = (
+				2CDFEFF6E416082AFDD79DA6 /* bindings.h */,
+			);
+			path = bindings;
+			sourceTree = "<group>";
+		};
+		59D36CB1074A74E9232DAD4F = {
+			isa = PBXGroup;
+			children = (
+				51C91D0854BB2D692142B24C /* assets */,
+				BBC1F2BACCF334143B914ABF /* Assets.xcassets */,
+				E4D6F5716EC75AEA91D1B137 /* LaunchScreen.storyboard */,
+				058500FD4618C86F00994CA6 /* htybox-ios_iOS */,
+				36EAEE27A62AA2F0ACBFEC48 /* Sources */,
+				BD52928BE915A433D16FFFDA /* src */,
+				29129AE9E8443C9331DB1ABB /* Frameworks */,
+				1435D2C6F5F27E29174D9A3D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6C5F38A1D5B4E273EF573106 /* htybox-ios */ = {
+			isa = PBXGroup;
+			children = (
+				DFB8ADB37C33DE376D8E1558 /* main.mm */,
+				46B59B284B41218DF3BD91CD /* bindings */,
+			);
+			path = "htybox-ios";
+			sourceTree = "<group>";
+		};
+		BD52928BE915A433D16FFFDA /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D1DB658DCD342E16D6B6069E /* lib.rs */,
+				32CA052C302BA0458C9FDD36 /* main.rs */,
+			);
+			name = src;
+			path = ../../src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A8856F780AC8C37BC00939E6 /* htybox-ios_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA364BF73719DBD43428A444 /* Build configuration list for PBXNativeTarget "htybox-ios_iOS" */;
+			buildPhases = (
+				1F86D6B634722CECA3DE9254 /* Build Rust Code */,
+				D8C1A44A7932612FD21C9245 /* Sources */,
+				BCF85F81501A2F5289F2601C /* Resources */,
+				DCC29A8E9C2BA2F8FEABD10F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "htybox-ios_iOS";
+			packageProductDependencies = (
+			);
+			productName = "htybox-ios_iOS";
+			productReference = 3C7F7923BAFB454506976F70 /* htybox-ios_iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		817FCAC470A4C7476D0CF53E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = CF669782AFF8224C08BB6BE8 /* Build configuration list for PBXProject "htybox-ios" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 59D36CB1074A74E9232DAD4F;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1435D2C6F5F27E29174D9A3D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A8856F780AC8C37BC00939E6 /* htybox-ios_iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BCF85F81501A2F5289F2601C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAAB63976DF11DA2E6D906F5 /* Assets.xcassets in Resources */,
+				18CFDC8C291AC166FF5C5A22 /* LaunchScreen.storyboard in Resources */,
+				9A7B752AC9946B839CADF62E /* assets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1F86D6B634722CECA3DE9254 /* Build Rust Code */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build Rust Code";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Externals/x86_64/${CONFIGURATION}/libapp.a",
+				"$(SRCROOT)/Externals/arm64/${CONFIGURATION}/libapp.a",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -euo pipefail\nexport PATH=\"/opt/homebrew/opt/rustup/bin:$HOME/.cargo/bin:$PATH\"\n\ncd ../../\nrm -rf gen/apple/assets\nmkdir -p gen/apple/assets\ncp -R ../dist/. gen/apple/assets/\n\nif [ \"${PLATFORM_NAME:?}\" = \"iphonesimulator\" ]; then\n  RUST_TARGET=\"aarch64-apple-ios-sim\"\nelse\n  RUST_TARGET=\"aarch64-apple-ios\"\nfi\n\nif [ \"${CONFIGURATION:?}\" = \"release\" ]; then\n  cargo build --target \"$RUST_TARGET\" --release --features tauri/custom-protocol\n  PROFILE_DIR=\"release\"\nelse\n  cargo build --target \"$RUST_TARGET\" --features tauri/custom-protocol\n  PROFILE_DIR=\"debug\"\nfi\n\nmkdir -p \"gen/apple/Externals/arm64/${CONFIGURATION}\"\ncp \"target/${RUST_TARGET}/${PROFILE_DIR}/libapp_lib.a\" \"gen/apple/Externals/arm64/${CONFIGURATION}/libapp.a\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D8C1A44A7932612FD21C9245 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55CC1434FF8AF3B3D724CC7A /* main.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		043C03172980D1096EE7DB15 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = debug;
+		};
+		7FC3C5932148536351FB5ACC /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ARCHS = (
+					arm64,
+				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "htybox-ios_iOS/htybox-ios_iOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				INFOPLIST_FILE = "htybox-ios_iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
+				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.htybox.ios;
+				PRODUCT_NAME = "HtyBox";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+				DEVELOPMENT_TEAM = "P8KJ354C4V";
+			};
+			name = release;
+		};
+		DA48DA86863F5795D3FF1588 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = release;
+		};
+		EB92E29B4B23AA95BF06A36E /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ARCHS = (
+					arm64,
+				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "htybox-ios_iOS/htybox-ios_iOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				INFOPLIST_FILE = "htybox-ios_iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
+				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.htybox.ios;
+				PRODUCT_NAME = "HtyBox";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+				DEVELOPMENT_TEAM = "P8KJ354C4V";
+			};
+			name = debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CF669782AFF8224C08BB6BE8 /* Build configuration list for PBXProject "htybox-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				043C03172980D1096EE7DB15 /* debug */,
+				DA48DA86863F5795D3FF1588 /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = debug;
+		};
+		FA364BF73719DBD43428A444 /* Build configuration list for PBXNativeTarget "htybox-ios_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB92E29B4B23AA95BF06A36E /* debug */,
+				7FC3C5932148536351FB5ACC /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 817FCAC470A4C7476D0CF53E /* Project object */;
+}

@@ -18,7 +18,9 @@ export default function App() {
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
 
-  const reload = useCallback(async () => setProfiles(await store.list()), [store]);
+  const reload = useCallback(async () => {
+    setProfiles(await store.list());
+  }, [store]);
   useEffect(() => {
     void reload();
   }, [reload]);

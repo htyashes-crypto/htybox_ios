@@ -1,0 +1,37 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "HtyBox",
+  "version": "0.1.0",
+  "identifier": "com.htybox.ios",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1430",
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "HtyBox",
+        "width": 800,
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "android": {
+      "debugApplicationIdSuffix": ".debug"
+    },
+    "iOS": {
+      "developmentTeam": "P8KJ354C4V",
+      "minimumSystemVersion": "14.0"
+    }
+  }
+}

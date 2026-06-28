@@ -1,5 +1,5 @@
-// HostProfile 持久化（spec §7.3）。HostProfileStore 异步接口 + localStorage 实现（dev）；
-// 设备原生安全存储（Keychain / stronghold）实现见 Step 6，接同一异步接口（决策 4）。
+// HostProfile 持久化（spec §7.3）。HostProfileStore 异步接口 + localStorage 实现。
+// StrongholdProfileStore 保留为原生安全存储实现，默认路径先用 localStorage 保证配对流程稳定。
 import type { ConnectionOffer } from "@htybox/link";
 
 export interface HostProfile {
@@ -41,7 +41,7 @@ export interface HostProfileStore {
 
 const KEY = "htybox.ios.hosts.v1";
 
-/** dev / web 实现；设备上由原生安全存储实现替换（同接口）。 */
+/** web / 设备默认实现；Host 公钥是信任锚但非密钥，后续可切 StrongholdProfileStore。 */
 export class LocalStorageProfileStore implements HostProfileStore {
   async list(): Promise<HostProfile[]> {
     const raw = localStorage.getItem(KEY);
