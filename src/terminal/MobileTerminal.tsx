@@ -1,4 +1,3 @@
-import { FitAddon } from "@xterm/addon-fit";
 import { Unicode11Addon } from "@xterm/addon-unicode11";
 import { Terminal } from "@xterm/xterm";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
@@ -24,6 +23,27 @@ const SUPPRESS_CSI: { prefix?: string; intermediates?: string; final: string }[]
   { prefix: "?", final: "n" }, // DEC 私有 DSR
   { prefix: "?", intermediates: "$", final: "p" }, // DECRQM 模式查询
 ];
+
+// 字体自适应：缩放字号让 (cols×rows) 网格铺满手机容器。桌面独占 PTY 尺寸，手机纯镜像、
+// 永不回改 PTY；故按服务端下发的真实 cols/rows 渲染，再调字号铺满（宽终端字会变小，符合镜像预期）。
+function fitFont(term: Terminal, host: HTMLElement) {
+  const { cols, rows } = term;
+  const w = host.clientWidth;
+  const h = host.clientHeight;
+  if (!cols || !rows || w <= 0 || h <= 0) return;
+  const fs = term.options.fontSize ?? 13;
+  // 优先用 xterm 实测单元尺寸（与 FitAddon 同源），无则回退经验比例。
+  const cell = (
+    term as unknown as {
+      _core?: { _renderService?: { dimensions?: { css?: { cell?: { width: number; height: number } } } } };
+    }
+  )._core?._renderService?.dimensions?.css?.cell;
+  const cw = cell && cell.width > 0 ? cell.width : fs * 0.6;
+  const ch = cell && cell.height > 0 ? cell.height : fs * 1.2;
+  const scale = Math.min(w / (cols * cw), h / (rows * ch));
+  const next = Math.max(5, Math.min(Math.round(fs * scale), 16));
+  if (next !== fs) term.options.fontSize = next;
+}
 
 export const MobileTerminal = forwardRef<MobileTerminalHandle, Props>(function MobileTerminal({ conn, terminalId }, ref) {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -58,14 +78,17 @@ export const MobileTerminal = forwardRef<MobileTerminalHandle, Props>(function M
       windowsPty: { backend: "conpty", buildNumber: 19045 },
     });
     termRef.current = term;
-    const fit = new FitAddon();
-    term.loadAddon(fit);
     term.loadAddon(new Unicode11Addon());
     term.unicode.activeVersion = "11";
     for (const id of SUPPRESS_CSI) term.parser.registerCsiHandler(id, () => true);
-
     term.open(host);
-    fit.fit();
+
+    // 应用桌面下发的尺寸 + 字体自适应（永不 sendResize 回改 PTY）。
+    const applySize = (cols: number, rows: number) => {
+      if (cols > 0 && rows > 0 && (term.cols !== cols || term.rows !== rows)) term.resize(cols, rows);
+      fitFont(term, host);
+      requestAnimationFrame(() => fitFont(term, host)); // 字号变化后单元尺寸更新，再校准一次
+    };
 
     let disposed = false;
     const dataSub = term.onData((data) => {
@@ -73,18 +96,21 @@ export const MobileTerminal = forwardRef<MobileTerminalHandle, Props>(function M
     });
 
     conn
-      .subscribe(terminalId, { mode: "visible-snapshot" }, (bytes) => term.write(bytes))
+      .subscribe(
+        terminalId,
+        { mode: "visible-snapshot" },
+        (bytes) => term.write(bytes),
+        (cols, rows) => applySize(cols, rows), // 桌面 resize → 跟随其尺寸
+      )
       .then((res) => {
         if (disposed) return;
         slotRef.current = res.slot;
-        conn.sendResize(res.slot, term.cols, term.rows);
+        applySize(res.cols, res.rows); // 初始按桌面真实尺寸渲染
       })
       .catch((e) => term.write(`\r\n[订阅失败] ${String(e)}\r\n`));
 
-    const ro = new ResizeObserver(() => {
-      fit.fit();
-      if (slotRef.current >= 0) conn.sendResize(slotRef.current, term.cols, term.rows);
-    });
+    // 容器尺寸变化（旋转/软键盘）→ 只重算字号；网格仍是桌面尺寸，绝不 sendResize。
+    const ro = new ResizeObserver(() => fitFont(term, host));
     ro.observe(host);
 
     return () => {

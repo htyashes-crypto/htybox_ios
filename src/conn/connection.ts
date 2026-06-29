@@ -172,11 +172,17 @@ export class HostConnection {
     terminalId: string,
     restore: RestoreMode,
     onData: (bytes: Uint8Array) => void,
+    onResize?: (cols: number, rows: number) => void,
   ): Promise<SubscribeTerminalResult> {
     const gate = createRevisionGate();
-    return this.client().subscribeTerminal(terminalId, restore, (rev, data) => {
-      if (gate(rev)) onData(data);
-    });
+    return this.client().subscribeTerminal(
+      terminalId,
+      restore,
+      (rev, data) => {
+        if (gate(rev)) onData(data);
+      },
+      onResize,
+    );
   }
 
   /** 释放对某终端的订阅（不杀终端）。清理路径用，连接已断则忽略。 */
